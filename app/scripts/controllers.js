@@ -129,7 +129,7 @@ angular.module('confusionApp')
     function ($scope, menuFactory, corporateFactory) {
 
       $scope.featured = menuFactory.getDish(0);     
-      $scope.promotion = menuFactory.getPromotion();
+      $scope.promotion = menuFactory.getPromotion(0);
       $scope.specialist = corporateFactory.getLeader(3);   
     }
   ])
