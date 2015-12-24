@@ -17,9 +17,9 @@ var gulp = require('gulp'),
     
 
 gulp.task('jshint', function() {
-  return gulp.src('app/scripts/**/*.js')
-  .pipe(jshint())
-  .pipe(jshint.reporter(stylish));
+    return gulp.src('app/scripts/**/*.js')
+                .pipe(jshint())
+                .pipe(jshint.reporter(stylish));
 });
 
 // Clean
@@ -36,6 +36,9 @@ gulp.task('default', ['clean'], function() {
     gulp.start('usemin', 'imagemin','copyfonts');
 });
 
+// The task below generates an exception if more than one file is found.
+// It's a usemin problem: https://github.com/zont/gulp-usemin/issues/91
+//
 // gulp.task('usemin',['jshint'], function () {
 //   return gulp.src([ './app/*.html' ])
 //       .pipe(usemin({
@@ -68,10 +71,10 @@ gulp.task('imagemin', ['clear-cache'], function() {
 });
 
 gulp.task('copyfonts', ['clean'], function() {
-   gulp.src('./bower_components/font-awesome/fonts/**/*.{ttf,woff,eof,svg}*')
-   .pipe(gulp.dest('./dist/fonts'));
-   gulp.src('./bower_components/bootstrap/dist/fonts/**/*.{ttf,woff,eof,svg}*')
-   .pipe(gulp.dest('./dist/fonts'));
+    gulp.src('./bower_components/font-awesome/fonts/**/*.{ttf,woff,eof,svg}*')
+        .pipe(gulp.dest('./dist/fonts'));
+    gulp.src('./bower_components/bootstrap/dist/fonts/**/*.{ttf,woff,eof,svg}*')
+        .pipe(gulp.dest('./dist/fonts'));
 });
 
 // Watch
@@ -84,22 +87,24 @@ gulp.task('watch', ['browser-sync'], function() {
 });
 
 gulp.task('browser-sync', ['default'], function () {
-   var files = [
-      'app/**/*.html',
-      'app/styles/**/*.css',
-      'app/images/**/*.png',
-      'app/scripts/**/*.js',
-      'dist/**/*'
-   ];
+    var files = [
+        'app/**/*.html',
+        'app/styles/**/*.css',
+        'app/images/**/*.png',
+        'app/scripts/**/*.js',
+        'dist/**/*'
+    ];
 
-   browserSync.init(files, {
-      server: {
-         baseDir: "dist",
-         index: "index.html"
-      },
-      port: process.env.PORT,
-      host: process.env.IP
-   });
-        // Watch any files in dist/, reload on change
-  gulp.watch(['dist/**']).on('change', browserSync.reload);
+    browserSync.init(files, {
+        server: {
+            baseDir: "dist",
+            index: "index.html"
+        },
+        // Needed for Cloud9. Usually needs manual reload.
+        port: process.env.PORT,
+        host: process.env.IP
     });
+    
+    // Watch any files in dist/, reload on change
+    gulp.watch(['dist/**']).on('change', browserSync.reload);
+});
